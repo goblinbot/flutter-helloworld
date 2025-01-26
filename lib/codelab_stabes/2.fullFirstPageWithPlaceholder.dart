@@ -43,16 +43,6 @@ class MyAppState extends ChangeNotifier {
     }
     notifyListeners();
   }
-
-  void removeFavorite(WordPair favorite) {
-    if (favorites.contains(favorite)) {
-      favorites.remove(favorite);
-    } else {
-      throw UnimplementedError(
-          'Cannot remove $favorite; was not favorited at all. Woah. How did we get here?');
-    }
-    notifyListeners();
-  }
 }
 
 // ...
@@ -74,7 +64,7 @@ class _MyHomePageState extends State<MyHomePage> {
         page = GeneratorPage();
         break;
       case 1:
-        page = FavoritePage();
+        page = Placeholder();
         break;
       default:
         throw UnimplementedError('no widget for $selectedIndex');
@@ -82,10 +72,6 @@ class _MyHomePageState extends State<MyHomePage> {
 
     return LayoutBuilder(builder: (context, constraints) {
       return Scaffold(
-        appBar: AppBar(
-          backgroundColor: Color.fromRGBO(115, 34, 255, 1),
-          // backgroundColor: Theme.of(context).primaryColorDark,
-        ),
         body: Row(
           children: [
             SafeArea(
@@ -196,43 +182,6 @@ class BigCard extends StatelessWidget {
               "${pair.first} ${pair.second}", // read first and second word separate for screen readers!
         ),
       ),
-    );
-  }
-}
-
-class FavoritePage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    var appState = context.watch<MyAppState>();
-    // var favorites = appState.favorites.map((m) => Text('${m}')).toList();
-    var favorites = appState.favorites;
-
-    if (favorites.isEmpty) {
-      return ListView(children: [
-        Padding(
-            padding: const EdgeInsets.all(20),
-            child: Text('No favorites yet.',
-                style: Theme.of(context).textTheme.displaySmall!)),
-      ]);
-    }
-
-    return ListView(
-      children: [
-        Padding(
-          padding: const EdgeInsets.all(20),
-          child: Text(
-            'You have ${favorites.length} favorite(s)',
-          ),
-        ),
-        SizedBox(height: 4),
-        for (var fav in favorites)
-          ListTile(
-              leading: Icon(Icons.delete),
-              title: Text('$fav'),
-              onTap: () {
-                appState.removeFavorite(fav);
-              }),
-      ],
     );
   }
 }

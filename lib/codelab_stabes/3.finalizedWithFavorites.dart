@@ -51,7 +51,6 @@ class MyAppState extends ChangeNotifier {
       throw UnimplementedError(
           'Cannot remove $favorite; was not favorited at all. Woah. How did we get here?');
     }
-    notifyListeners();
   }
 }
 
@@ -208,21 +207,15 @@ class FavoritePage extends StatelessWidget {
     var favorites = appState.favorites;
 
     if (favorites.isEmpty) {
-      return ListView(children: [
-        Padding(
-            padding: const EdgeInsets.all(20),
-            child: Text('No favorites yet.',
-                style: Theme.of(context).textTheme.displaySmall!)),
-      ]);
+      return Padding(
+          padding: const EdgeInsets.all(20), child: Text('No favorites yet.'));
     }
 
     return ListView(
       children: [
         Padding(
           padding: const EdgeInsets.all(20),
-          child: Text(
-            'You have ${favorites.length} favorite(s)',
-          ),
+          child: Text('You have ${favorites.length} favorite(s)'),
         ),
         SizedBox(height: 4),
         for (var fav in favorites)
